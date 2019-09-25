@@ -1,0 +1,111 @@
+/*  CompiladorExemplo.jj  -  Analisador Léxico */
+
+options {
+
+  JDK_VERSION = "1.8";
+ 
+  DEBUG_PARSER = false;
+ 
+  DEBUG_TOKEN_MANAGER = false;
+ 
+}
+ 
+PARSER_BEGIN(CompiladorExemplo)
+ 
+import java.io.*;
+
+public class CompiladorExemplo {
+
+	public static void main(String args[]) throws ParseException {
+ 
+      CompiladorExemplo analisador = null;
+
+      try {// observar caminho do local do .my
+         analisador = new CompiladorExemplo(new FileInputStream("C:/Users/aluno.laboratorio/workspace/compilador/prog_fonte.my"));
+ 	
+         analisador.inicio();
+
+      }
+
+      catch(FileNotFoundException e) {
+
+         System.out.println("Erro: arquivo não encontrado");
+
+      }
+
+      catch(TokenMgrError e) {
+
+         System.out.println("Erro léxico\n" + e.getMessage());
+
+      }
+
+   }
+
+}
+
+PARSER_END(CompiladorExemplo)
+
+ 
+SKIP : { " " | "\t" | "\r" | "\n" }
+
+ 
+
+TOKEN [IGNORE_CASE] : {
+ 
+      <EXIBE: "exibe" >
+ 
+}
+ 
+TOKEN : {
+ 
+      < IDENT:   (["a"-"z"])+ > |
+ 
+      < ATRIB:   ":=" >         | 
+ 
+      < ADICAO:  "+" >          |
+
+      < PT_VIRG: ";" >          |
+
+      < UM:      "I" >          |
+
+      < DOIS:    "II" >         |
+
+      < TRES:    "III" >        |
+
+      < QUATRO:  "IV" >         |
+
+      < CINCO:   "V" >          |
+
+      < SEIS:    "VI" >         |
+
+      < SETE:    "VII" >        |
+
+      < OITO:    "VIII" >       |
+
+      < NOVE:    "IX" >         |
+
+      < DEZ:     "X" >          |
+
+      < VINTE:   "XX" >         |
+
+      < TRINTA:  "XXX" >       
+
+}                
+
+JAVACODE void inicio()
+
+{
+ 
+   Token t;
+ 
+   do {
+ 
+      t = getNextToken();
+ 
+      System.out.println(tokenImage[t.kind]+"\t"+t.image); 
+ 
+   }
+
+   while(t.kind != EOF); 
+
+}
